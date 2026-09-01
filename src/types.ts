@@ -6,6 +6,8 @@ export interface User {
   phone: string;
   avatar: string;
   patientId: string;
+  authProvider?: 'password' | 'google' | 'aadhaar';
+  isGoogleVerified?: boolean;
 }
 
 export interface PatientProfile {

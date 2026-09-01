@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp, NavigationTab } from '../context/AppContext';
+import { GoogleAuthButton } from './GoogleAuthButton';
 import {
   HeartPulse,
   Calendar,
@@ -200,9 +201,16 @@ export const Navbar: React.FC = () => {
                 {isUserMenuOpen && (
                   <div className="absolute right-0 mt-2 w-64 bg-[#ffffff] rounded-2xl shadow-xl border border-[#e8e4db] p-2 z-50 animate-in fade-in zoom-in-95 duration-150">
                     <div className="px-3 py-2 border-b border-[#f0ece3] mb-1">
-                      <p className="text-xs font-bold text-[#36352f]">{user.fullName}</p>
-                      <p className="text-[11px] text-[#79776e]">{user.email}</p>
-                      <div className="mt-1 flex items-center space-x-1.5 text-[10px] font-mono text-[#364b39] bg-[#edf2ec] px-2 py-0.5 rounded border border-[#d2ded0]">
+                      <div className="flex items-center justify-between">
+                        <p className="text-xs font-bold text-[#36352f]">{user.fullName}</p>
+                        {user.authProvider === 'google' && (
+                          <span className="flex items-center text-[9px] bg-[#edf2ec] text-[#364b39] px-1.5 py-0.5 rounded font-medium border border-[#d2ded0]">
+                            Google Verified
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-[11px] text-[#79776e] truncate">{user.email}</p>
+                      <div className="mt-1.5 flex items-center space-x-1.5 text-[10px] font-mono text-[#364b39] bg-[#edf2ec] px-2 py-0.5 rounded border border-[#d2ded0]">
                         <ShieldCheck className="w-3 h-3 text-[#4f6352]" />
                         <span>ABHA: {aadhaarInfo.abhaId}</span>
                       </div>
@@ -246,14 +254,17 @@ export const Navbar: React.FC = () => {
                 )}
               </div>
             ) : (
-              <button
-                id="login_trigger_btn"
-                onClick={() => setIsAuthModalOpen(true)}
-                className="bg-[#4f6352] hover:bg-[#3f5042] text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center space-x-1.5"
-              >
-                <User className="w-3.5 h-3.5" />
-                <span>Sign In / Aadhaar</span>
-              </button>
+              <div className="flex items-center space-x-2">
+                <GoogleAuthButton variant="navbar" />
+                <button
+                  id="login_trigger_btn"
+                  onClick={() => setIsAuthModalOpen(true)}
+                  className="bg-[#4f6352] hover:bg-[#3f5042] text-white px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all shadow-xs cursor-pointer flex items-center space-x-1.5"
+                >
+                  <User className="w-3.5 h-3.5" />
+                  <span>Sign In</span>
+                </button>
+              </div>
             )}
 
             {/* Mobile menu button */}

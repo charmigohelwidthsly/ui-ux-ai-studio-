@@ -68,6 +68,12 @@ export const DashboardView: React.FC = () => {
                 <span className="w-1.5 h-1.5 rounded-full bg-[#a5c9a2] animate-pulse"></span>
                 <span>Patient Portal Active</span>
               </span>
+              {user?.authProvider === 'google' && (
+                <span className="bg-[#4f6352]/40 text-[#d4e4d2] text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-[#8da08b]/30 flex items-center space-x-1">
+                  <span className="text-[10px] font-semibold text-[#a5c9a2]">G</span>
+                  <span>Google Account Verified</span>
+                </span>
+              )}
               {aadhaarInfo.isLinked && (
                 <button
                   onClick={() => setIsAadhaarLockerOpen(true)}

@@ -51,6 +51,7 @@ interface AppContextType {
   patientProfile: PatientProfile;
   aadhaarInfo: AadhaarInfo;
   login: (username: string, pass: string) => boolean;
+  loginWithGoogle: (googleUser?: { name?: string; email?: string; picture?: string; sub?: string }) => void;
   logout: () => void;
   register: (name: string, username: string, email: string, phone: string) => void;
   linkAadhaar: (aadhaarNum: string, otp: string) => Promise<boolean>;
@@ -186,6 +187,40 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
     addToast('error', 'Login Failed', 'Please enter a valid username and password (min 3 chars).');
     return false;
+  };
+
+  const loginWithGoogle = (googleUser?: { name?: string; email?: string; picture?: string; sub?: string }) => {
+    const fullName = googleUser?.name || 'Charmi Gohel';
+    const email = googleUser?.email || 'charmigohel.24.bdes@idea.indusuni.ac.in';
+    const avatar = googleUser?.picture || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80';
+    const username = email.split('@')[0] || fullName.toLowerCase().replace(/\s+/g, '.');
+
+    const newUser: User = {
+      id: googleUser?.sub || 'g_usr_' + Date.now(),
+      fullName: fullName,
+      username: username,
+      email: email,
+      phone: '+91 98251 34920',
+      avatar: avatar,
+      patientId: 'HC-G-' + Math.floor(1000 + Math.random() * 9000),
+      authProvider: 'google',
+      isGoogleVerified: true,
+    };
+
+    setUser(newUser);
+    setIsAuthenticated(true);
+    setIsAuthModalOpen(false);
+    addToast('success', 'Google Sign-In Successful', `Signed in as ${fullName} (${email}). Connected to secure patient gateway.`);
+
+    try {
+      confetti({
+        particleCount: 55,
+        spread: 65,
+        origin: { y: 0.65 },
+      });
+    } catch {
+      // ignore
+    }
   };
 
   const logout = () => {
@@ -427,6 +462,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         patientProfile,
         aadhaarInfo,
         login,
+        loginWithGoogle,
         logout,
         register,
         linkAadhaar,

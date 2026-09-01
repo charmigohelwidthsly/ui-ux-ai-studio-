@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
+import { GoogleAuthButton } from './GoogleAuthButton';
 import {
   X,
   Lock,
@@ -140,173 +141,209 @@ export const AuthModal: React.FC = () => {
         <div className="p-6">
           {/* LOGIN VIEW */}
           {authMode === 'login' && (
-            <form onSubmit={handleLoginSubmit} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold text-[#43423b] uppercase tracking-wider mb-1.5">
-                  Username or Mobile Number
-                </label>
-                <div className="relative">
-                  <User className="w-4 h-4 text-[#8a887e] absolute left-3 top-3" />
-                  <input
-                    type="text"
-                    required
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                    placeholder="e.g. priya.sharma"
-                    className="w-full bg-[#f9f7f2] border border-[#ded8cc] focus:border-[#4f6352] focus:bg-white rounded-xl pl-9 pr-4 py-2.5 text-xs text-[#36352f] outline-hidden font-medium transition-all"
-                  />
-                </div>
+            <div className="space-y-4">
+              {/* Google Sign In Integration */}
+              <div className="space-y-1.5">
+                <GoogleAuthButton
+                  variant="full"
+                  text="Continue with Google Account"
+                  onSuccess={() => setIsAuthModalOpen(false)}
+                />
               </div>
 
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="text-xs font-bold text-[#43423b] uppercase tracking-wider">
-                    Password
+              <div className="relative flex py-1 items-center">
+                <div className="grow border-t border-[#e8e4db]"></div>
+                <span className="shrink mx-3 text-[10px] uppercase font-bold text-[#8a887e] tracking-wider">
+                  Or Sign In with Username & Password
+                </span>
+                <div className="grow border-t border-[#e8e4db]"></div>
+              </div>
+
+              <form onSubmit={handleLoginSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-bold text-[#43423b] uppercase tracking-wider mb-1.5">
+                    Username or Mobile Number
                   </label>
-                  <span className="text-[11px] text-[#4f6352] font-semibold hover:underline cursor-pointer">
-                    Forgot password?
-                  </span>
+                  <div className="relative">
+                    <User className="w-4 h-4 text-[#8a887e] absolute left-3 top-3" />
+                    <input
+                      type="text"
+                      required
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      placeholder="e.g. priya.sharma"
+                      className="w-full bg-[#f9f7f2] border border-[#ded8cc] focus:border-[#4f6352] focus:bg-white rounded-xl pl-9 pr-4 py-2.5 text-xs text-[#36352f] outline-hidden font-medium transition-all"
+                    />
+                  </div>
                 </div>
-                <div className="relative">
-                  <Lock className="w-4 h-4 text-[#8a887e] absolute left-3 top-3" />
-                  <input
-                    type="password"
-                    required
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Enter your secure password"
-                    className="w-full bg-[#f9f7f2] border border-[#ded8cc] focus:border-[#4f6352] focus:bg-white rounded-xl pl-9 pr-4 py-2.5 text-xs text-[#36352f] outline-hidden font-medium transition-all"
-                  />
+
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="text-xs font-bold text-[#43423b] uppercase tracking-wider">
+                      Password
+                    </label>
+                    <span className="text-[11px] text-[#4f6352] font-semibold hover:underline cursor-pointer">
+                      Forgot password?
+                    </span>
+                  </div>
+                  <div className="relative">
+                    <Lock className="w-4 h-4 text-[#8a887e] absolute left-3 top-3" />
+                    <input
+                      type="password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Enter your secure password"
+                      className="w-full bg-[#f9f7f2] border border-[#ded8cc] focus:border-[#4f6352] focus:bg-white rounded-xl pl-9 pr-4 py-2.5 text-xs text-[#36352f] outline-hidden font-medium transition-all"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              {/* Quick Demo Pre-fill Pill */}
-              <div className="p-3 bg-[#edf2ec] rounded-xl border border-[#d2ded0] text-xs">
-                <p className="font-bold text-[#364b39] mb-1 flex items-center space-x-1">
-                  <Sparkles className="w-3.5 h-3.5 text-[#4f6352]" />
-                  <span>Quick Test Patient Credentials:</span>
-                </p>
-                <div className="flex flex-wrap gap-2 mt-1.5">
-                  <button
-                    type="button"
-                    onClick={() => fillQuickDemoAccount('priya.sharma', 'HospitalPass@2026')}
-                    className="px-2.5 py-1 bg-white text-[#364b39] rounded-md border border-[#d2ded0] text-[11px] font-semibold hover:bg-[#e4ede3] transition-colors cursor-pointer"
-                  >
-                    👤 Priya Sharma (Cardio & EMR Active)
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => fillQuickDemoAccount('rahul.verma', 'Secret@2026')}
-                    className="px-2.5 py-1 bg-white text-[#364b39] rounded-md border border-[#d2ded0] text-[11px] font-semibold hover:bg-[#e4ede3] transition-colors cursor-pointer"
-                  >
-                    👤 Rahul Verma (New Patient)
-                  </button>
+                {/* Quick Demo Pre-fill Pill */}
+                <div className="p-3 bg-[#edf2ec] rounded-xl border border-[#d2ded0] text-xs">
+                  <p className="font-bold text-[#364b39] mb-1 flex items-center space-x-1">
+                    <Sparkles className="w-3.5 h-3.5 text-[#4f6352]" />
+                    <span>Quick Test Patient Credentials:</span>
+                  </p>
+                  <div className="flex flex-wrap gap-2 mt-1.5">
+                    <button
+                      type="button"
+                      onClick={() => fillQuickDemoAccount('priya.sharma', 'HospitalPass@2026')}
+                      className="px-2.5 py-1 bg-white text-[#364b39] rounded-md border border-[#d2ded0] text-[11px] font-semibold hover:bg-[#e4ede3] transition-colors cursor-pointer"
+                    >
+                      👤 Priya Sharma (Cardio & EMR Active)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => fillQuickDemoAccount('rahul.verma', 'Secret@2026')}
+                      className="px-2.5 py-1 bg-white text-[#364b39] rounded-md border border-[#d2ded0] text-[11px] font-semibold hover:bg-[#e4ede3] transition-colors cursor-pointer"
+                    >
+                      👤 Rahul Verma (New Patient)
+                    </button>
+                  </div>
                 </div>
-              </div>
 
-              <button
-                type="submit"
-                id="submit_login_btn"
-                className="w-full bg-[#4f6352] hover:bg-[#3f5042] text-white font-bold text-xs py-3 rounded-xl transition-all shadow-xs flex items-center justify-center space-x-2 cursor-pointer"
-              >
-                <span>Sign In to Health Portal</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-
-              <div className="pt-2 border-t border-[#f0ece3] flex items-center justify-between text-xs text-[#79776e]">
-                <span>Want to link Aadhaar directly?</span>
                 <button
-                  type="button"
-                  onClick={() => setAuthMode('aadhaar')}
-                  className="text-[#4f6352] font-bold hover:underline cursor-pointer"
+                  type="submit"
+                  id="submit_login_btn"
+                  className="w-full bg-[#4f6352] hover:bg-[#3f5042] text-white font-bold text-xs py-3 rounded-xl transition-all shadow-xs flex items-center justify-center space-x-2 cursor-pointer"
                 >
-                  Verify Aadhaar & ABHA →
+                  <span>Sign In to Health Portal</span>
+                  <ArrowRight className="w-4 h-4" />
                 </button>
-              </div>
-            </form>
+
+                <div className="pt-2 border-t border-[#f0ece3] flex items-center justify-between text-xs text-[#79776e]">
+                  <span>Want to link Aadhaar directly?</span>
+                  <button
+                    type="button"
+                    onClick={() => setAuthMode('aadhaar')}
+                    className="text-[#4f6352] font-bold hover:underline cursor-pointer"
+                  >
+                    Verify Aadhaar & ABHA →
+                  </button>
+                </div>
+              </form>
+            </div>
           )}
 
           {/* REGISTER VIEW */}
           {authMode === 'register' && (
-            <form onSubmit={handleRegisterSubmit} className="space-y-3">
-              <div>
-                <label className="block text-xs font-bold text-[#43423b] uppercase tracking-wider mb-1">
-                  Full Legal Name (as per ID)
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={regFullName}
-                  onChange={(e) => setRegFullName(e.target.value)}
-                  placeholder="e.g. Priya Sharma"
-                  className="w-full bg-[#f9f7f2] border border-[#ded8cc] rounded-xl px-3.5 py-2 text-xs text-[#36352f] outline-hidden font-medium"
-                />
+            <div className="space-y-3">
+              {/* Google Sign Up */}
+              <GoogleAuthButton
+                variant="full"
+                text="Sign up with Google (Fastest)"
+                onSuccess={() => setIsAuthModalOpen(false)}
+              />
+
+              <div className="relative flex py-1 items-center">
+                <div className="grow border-t border-[#e8e4db]"></div>
+                <span className="shrink mx-3 text-[10px] uppercase font-bold text-[#8a887e] tracking-wider">
+                  Or Register with Details
+                </span>
+                <div className="grow border-t border-[#e8e4db]"></div>
               </div>
 
-              <div className="grid grid-cols-2 gap-2">
+              <form onSubmit={handleRegisterSubmit} className="space-y-3">
                 <div>
                   <label className="block text-xs font-bold text-[#43423b] uppercase tracking-wider mb-1">
-                    Username
+                    Full Legal Name (as per ID)
                   </label>
                   <input
                     type="text"
                     required
-                    value={regUsername}
-                    onChange={(e) => setRegUsername(e.target.value)}
-                    placeholder="priyasharma"
+                    value={regFullName}
+                    onChange={(e) => setRegFullName(e.target.value)}
+                    placeholder="e.g. Priya Sharma"
                     className="w-full bg-[#f9f7f2] border border-[#ded8cc] rounded-xl px-3.5 py-2 text-xs text-[#36352f] outline-hidden font-medium"
                   />
                 </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <div>
+                    <label className="block text-xs font-bold text-[#43423b] uppercase tracking-wider mb-1">
+                      Username
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={regUsername}
+                      onChange={(e) => setRegUsername(e.target.value)}
+                      placeholder="priyasharma"
+                      className="w-full bg-[#f9f7f2] border border-[#ded8cc] rounded-xl px-3.5 py-2 text-xs text-[#36352f] outline-hidden font-medium"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-[#43423b] uppercase tracking-wider mb-1">
+                      Mobile Phone
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={regPhone}
+                      onChange={(e) => setRegPhone(e.target.value)}
+                      placeholder="+91 98765 00000"
+                      className="w-full bg-[#f9f7f2] border border-[#ded8cc] rounded-xl px-3.5 py-2 text-xs text-[#36352f] outline-hidden font-medium"
+                    />
+                  </div>
+                </div>
+
                 <div>
                   <label className="block text-xs font-bold text-[#43423b] uppercase tracking-wider mb-1">
-                    Mobile Phone
+                    Email Address
                   </label>
                   <input
-                    type="tel"
-                    required
-                    value={regPhone}
-                    onChange={(e) => setRegPhone(e.target.value)}
-                    placeholder="+91 98765 00000"
+                    type="email"
+                    value={regEmail}
+                    onChange={(e) => setRegEmail(e.target.value)}
+                    placeholder="name@example.com"
                     className="w-full bg-[#f9f7f2] border border-[#ded8cc] rounded-xl px-3.5 py-2 text-xs text-[#36352f] outline-hidden font-medium"
                   />
                 </div>
-              </div>
 
-              <div>
-                <label className="block text-xs font-bold text-[#43423b] uppercase tracking-wider mb-1">
-                  Email Address
-                </label>
-                <input
-                  type="email"
-                  value={regEmail}
-                  onChange={(e) => setRegEmail(e.target.value)}
-                  placeholder="name@example.com"
-                  className="w-full bg-[#f9f7f2] border border-[#ded8cc] rounded-xl px-3.5 py-2 text-xs text-[#36352f] outline-hidden font-medium"
-                />
-              </div>
+                <div>
+                  <label className="block text-xs font-bold text-[#43423b] uppercase tracking-wider mb-1">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    required
+                    value={regPassword}
+                    onChange={(e) => setRegPassword(e.target.value)}
+                    placeholder="Minimum 6 characters"
+                    className="w-full bg-[#f9f7f2] border border-[#ded8cc] rounded-xl px-3.5 py-2 text-xs text-[#36352f] outline-hidden font-medium"
+                  />
+                </div>
 
-              <div>
-                <label className="block text-xs font-bold text-[#43423b] uppercase tracking-wider mb-1">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  required
-                  value={regPassword}
-                  onChange={(e) => setRegPassword(e.target.value)}
-                  placeholder="Minimum 6 characters"
-                  className="w-full bg-[#f9f7f2] border border-[#ded8cc] rounded-xl px-3.5 py-2 text-xs text-[#36352f] outline-hidden font-medium"
-                />
-              </div>
-
-              <button
-                type="submit"
-                id="submit_register_btn"
-                className="w-full bg-[#4f6352] hover:bg-[#3f5042] text-white font-bold text-xs py-3 rounded-xl transition-all shadow-xs cursor-pointer mt-2"
-              >
-                Create Account & Generate Patient UHID
-              </button>
-            </form>
+                <button
+                  type="submit"
+                  id="submit_register_btn"
+                  className="w-full bg-[#4f6352] hover:bg-[#3f5042] text-white font-bold text-xs py-3 rounded-xl transition-all shadow-xs cursor-pointer mt-2"
+                >
+                  Create Account & Generate Patient UHID
+                </button>
+              </form>
+            </div>
           )}
 
           {/* AADHAAR & ABHA LINKING VIEW */}
