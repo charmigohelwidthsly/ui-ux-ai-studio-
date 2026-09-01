@@ -1,0 +1,12 @@
+{
+  "name": "AarogyaCare Hospital & Patient Portal",
+  "description": "Comprehensive hospital portal for booking appointments, secure EMR/EHR access, doctor chat, Aadhaar/ABHA ID verification, and nearby pharmacy locator.",
+  "requestFramePermissions": [
+    "geolocation",
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
